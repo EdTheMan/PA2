@@ -59,10 +59,8 @@ class MovieData
   
   def add_training_set(file,number_of_lines)
     
-       lines = File.readlines(file)[0..(number_of_lines-1)]
+       File.readlines(file)[0..(number_of_lines-1)].each do |value|
        
-       lines.each do |value|
-         
          split_line = value.split(" ")
        
          #maps the user hash to a hash of movie_id mapped to the rating given by the user
@@ -80,10 +78,8 @@ class MovieData
   
   def add_test_set(file,number_of_lines)
     
-      lines = File.readlines(file)[0..(number_of_lines-1)]
-      
-      lines.each do |value|
-         
+       File.readlines(file)[0..(number_of_lines-1)].each do |value|
+
          split_line = value.split(" ")
          
          @test_set[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
@@ -92,28 +88,24 @@ class MovieData
     
   end
   
-    def rating(u,m)
-  
-    if @user_hash[u][m] == nil
+  def rating(u,m)
+        
+    if @user_hash[u][m] != nil
       
-      return 0 
+      return @user_hash[u][m]   
       
     else
       
-      return @user_hash[u][m]  
+      return 0
       
     end
-    
-    
-  
+ 
   end
 
 
   def predict(u,m)
     
     most_similar_users = most_similar(u)
-    
-    #p most_similar_users
     
     total_ratings = 0.0
     number_of_ratings = 0.0
@@ -145,28 +137,19 @@ class MovieData
     users = Array.new
     @user_hash.each do |key,value|
          if(value.has_key?(m))
-        
-         users << key
-          
-         end   
-          
-    end
-    
-    return users
-    
+         users << key       
+         end          
+    end  
+    return users   
   end
 
 def run_test(k)
   
-  result_object = MovieTest.new
-  
-  for x in 0..(k-1)
-    
+  result_object = MovieTest.new 
+  for x in 0..(k-1) 
     dummy = @ratings[x].split(" ")
-    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1])))
-  
-  end
-  
+    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
+  end 
   return result_object
   
 end
