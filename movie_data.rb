@@ -30,7 +30,7 @@ class MovieData
     @test_set = Hash.new {|h,k| h[k] = Hash.new } 
     @arg1 = arg1
     @arg2 = arg2
-    @ratings = File.readlines('u1.test')  
+    
     
   end
   
@@ -39,14 +39,13 @@ class MovieData
         
     if @arg1 == "ml-100k" and @arg2 == nil
  
-        add_training_set('u.data',100000)
+        add_sets(@user_hash,'u.data')
         #p @user_hash.keys.take(5)
     
     elsif @arg1 == 'ml-100k' and @arg2 == :u1
       
-        add_training_set('u1.base',80000)
-        add_test_set('u1.test',20000)
-       
+        add_sets(@user_hash,'u1.base')
+        add_sets2(@test_set,'u1.test')
         #p @user_hash.keys.take(5)
         
      else
@@ -59,14 +58,14 @@ class MovieData
   end
   
   
-  def add_training_set(file,number_of_lines)
+  def add_sets(array,file)
     
-       File.readlines(file)[0..(number_of_lines-1)].each do |value|
+       File.readlines(file).each do |value|
        
          split_line = value.split(" ")
        
          #maps the user hash to a hash of movie_id mapped to the rating given by the user
-         @user_hash[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
+         array[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
          
          #maps each movie id to its number of ratings
          @number_of_ratings_hash[Integer(split_line[1])] = @number_of_ratings_hash[Integer(split_line[1])] + 1
@@ -78,17 +77,15 @@ class MovieData
        
   end
   
-  def add_test_set(file,number_of_lines)
+  
+  def add_sets2(array,file)
     
-       File.readlines(file)[0..(number_of_lines-1)].each do |value|
-
-         split_line = value.split(" ")
-         
-         @test_set[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
-        
-       end
-    
+         #maps the user hash to a hash of movie_id mapped to the rating given by the user
+         array[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
+ 
   end
+  
+ 
   
   def rating(u,m)
         
