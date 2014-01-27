@@ -20,7 +20,7 @@ class MovieData
   def initialize(arg1 = nil,arg2 = nil)
     
     
-    @user_hash = Hash.new {|h,k| h[k] = Hash.new } #hash where user maps to a hash that maps movie_id to its rating by the user
+    @user_hash = Hash.new {|h,k| h[k] = Hash.new(0) } #hash where user maps to a hash that maps movie_id to its rating by the user
     @number_of_ratings_hash = Hash.new(0) #hash that maps a movie to the number of rating it has
     @timestamp_hash = Hash.new {|h,k| h[k] = Array.new } #hash that maps movie id to an array of its timestamps of when it was rated.
     @avg_timestamp_hash = Hash.new #hash that maps the movie_id to the average timestamp of when it was rated (see popularity_list())
@@ -91,40 +91,26 @@ class MovieData
   def rating(u,m)
         
     if @user_hash[u][m] != nil
-      
       return @user_hash[u][m]   
-      
-    else
-      
-      return 0
-      
     end
- 
+    return 0
   end
 
 
   def predict(u,m)
-    
-    most_similar_users = most_similar(u)
-    
+   
     total_ratings = 0.0
     number_of_ratings = 0.0
     
-    most_similar_users.each do |key|
-    
-      #p @user_hash[key][m]
-      if @user_hash[key][m] != nil
+    most_similar(u).each do |key|
+      p @user_hash[key][m]
         total_ratings += @user_hash[key][m]
-        number_of_ratings += 1
-      end
-    
     end
     
     if(number_of_ratings != 0.0)
     return total_ratings/number_of_ratings
-    else
-    return 0.0
     end
+    return 0.0
     
   end
 
