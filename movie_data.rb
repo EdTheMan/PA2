@@ -133,13 +133,12 @@ class MovieData
 def run_test(k)
   
   #result_object = MovieTest.new 
-  store = Array.new
-  file = File.readlines('u1.test')[0..(k-1)]
-  file.each do |value|
+  result_object = MovieTest.new
+  File.readlines('u1.test')[0..(k-1)].each do |value|
     dummy = value.split(" ")
-    store << (Array.new << Integer(dummy[0]) << Integer(dummy[1]) << Integer(dummy[2]) << predict(Integer(dummy[0]),Integer(dummy[1])))
+    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
   end 
-  return MovieTest.new(store)
+  return result_object
   
 end
   

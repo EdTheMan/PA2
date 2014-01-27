@@ -1,12 +1,17 @@
 class MovieTest
   
-  def initialize(store)
+  def initialize()
     
-    @list_of_results = store
+    @list_of_results = Array.new
     
   end
   
   
+  def store_result(user,movie,rating,prediction)
+    
+    @list_of_results << (Array.new << user << movie <<rating << prediction)
+    
+  end
   
   def mean
     
