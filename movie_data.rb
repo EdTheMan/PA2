@@ -37,42 +37,16 @@ class MovieData
         
     if @arg1 == "ml-100k" and @arg2 == nil
  
-     File.readlines('u.data').each do |line|
+        add_training_set('u.data',100000)
+        #p @user_hash.keys.take(5)
+    
+    elsif @arg1 == 'ml-100k' and @arg2 == :u1
+      
+        add_training_set('u1.base',80000)
+        add_test_set('u1.test',20000)
        
-       #user_id- 0, movie_id - 1, rating - 2, timestamp - 3
-       dataLine = line.split(" ")
-       
-       #maps the user hash to a hash of movie_id mapped to the rating given by the user
-       @user_hash[Integer(dataLine[0])][Integer(dataLine[1])] = (Integer(dataLine[2]))
-       
-       #maps each movie id to its number of ratings
-       @number_of_ratings_hash[Integer(dataLine[1])] = @number_of_ratings_hash[Integer(dataLine[1])] + 1
+        #p @user_hash.keys.take(5)
         
-       #puts each movie_id's timestamps into an ARRAY mapped by the movie_id
-       @timestamp_hash[Integer(dataLine[1])] << (Integer(dataLine[3]))
-  
-     end
-    
-    
-    elsif arg1 == 'ml-100k' and arg2 == :u1
-      
-      
-       lines = File.readlines('u1.base')[0..79999] 
-       lines2 = File.readlines('u1.test')[0..19999]
-    
-       lines.each do |value|
-          each_line = value.split(" ")
-          #maps the user hash to a hash of movie_id mapped to the rating given by the user
-          @user_hash[Integer(each_line[0])][Integer(each_line[1])] = (Integer(each_line[2]))
-       end 
-       
-       lines2.each do |value|
-          each_line2 = value.split(" ")
-          #maps the user hash to a hash of movie_id mapped to the rating given by the user
-          @test_set[Integer(each_line2[0])][Integer(each_line2[1])] = (Integer(each_line2[2]))
-       end  
-      
-      
      else
     
         p "Invalid arguments"
@@ -82,6 +56,41 @@ class MovieData
       
   end
   
+  
+  def add_training_set(file,number_of_lines)
+    
+       lines = File.readlines(file)[0..(number_of_lines-1)]
+       
+       lines.each do |value|
+         
+         split_line = value.split(" ")
+       
+         #maps the user hash to a hash of movie_id mapped to the rating given by the user
+         @user_hash[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
+         
+         #maps each movie id to its number of ratings
+         @number_of_ratings_hash[Integer(split_line[1])] = @number_of_ratings_hash[Integer(split_line[1])] + 1
+          
+         #puts each movie_id's timestamps into an ARRAY mapped by the movie_id
+         @timestamp_hash[Integer(split_line[1])] << (Integer(split_line[3]))
+         
+       end
+       
+  end
+  
+  def add_test_set(file,number_of_lines)
+    
+      lines = File.readlines(file)[0..(number_of_lines-1)]
+      
+      lines.each do |value|
+         
+         split_line = value.split(" ")
+         
+         @test_set[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
+        
+       end
+    
+  end
   
     def rating(u,m)
   
