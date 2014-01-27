@@ -87,6 +87,61 @@ class MovieData
   
  
   
+  def rating(u,m)
+        
+    if @user_hash[u][m] != nil
+      return @user_hash[u][m]   
+    end
+    return 0
+  end
+
+
+  def predict(u,m)
+    
+   
+    total_ratings = 0.0
+    number_of_ratings = 0.0
+    
+    most_similar(u).each do |key|
+      if @user_hash[key][m] != nil
+        total_ratings += @user_hash[key][m]
+        number_of_ratings += 1
+      end   
+    end
+    
+    if(number_of_ratings != 0.0)
+    return total_ratings/number_of_ratings
+    end
+    return 0.0
+    
+  end
+
+  def movies(u)
+    p @user_hash[u].keys
+  end
+  
+  def viewers(m)
+    users = Array.new
+    @user_hash.each do |key,value|
+         if(value.has_key?(m))
+         users << key       
+         end          
+    end  
+    return users   
+  end
+
+def run_test(k)
+  
+  #result_object = MovieTest.new 
+  result_object = MovieTest.new
+  File.readlines('u1.test')[0..(k-1)].each do |value|
+    dummy = value.split(" ")
+    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
+  end 
+  return result_object
+  
+end
+  
   #takes movie_id (integer) as parameters
   #returns a number determining the popularity
   def popularity(movie_id)     
