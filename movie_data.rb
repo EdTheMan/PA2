@@ -1,14 +1,3 @@
-#Chi Ieong (Eddie) Tai
-#teddy123168@gmail.com
-#1/20/14
-#Pito Salas, COSI 236B
-#This class is used to determine the popularity of a movie and the similarity
-#between users using a text file from the current directory.
-#Popularity is given by the formula (Average timestamp/ SCALEAVERAGETIMESTAMP) + number of ratings
-#whether a movie has good or bad reviews, it could still be considered popular
-#and a movie who is older (smaller timestamp) will usually have more ratings because 
-#more people get a chance to rate it, so give a slight advantage to newer movies based on SCALEAVERAGETIMESTAMP.
-#Similarity is given by 1 / 1 + ((rating of user1) - (rating of user2).abs))
 
 
 class MovieData
