@@ -59,18 +59,20 @@ class MovieData
   
   def add_training_set(file,number_of_lines)
     
-       File.readlines(file)[0..(number_of_lines-1)].each do |value|
+       File.readlines(file)[0..(number_of_lines-1)]
        
-         #split_line = value.split(" ")
+       lines.each do |value|
+         
+         split_line = value.split(" ")
        
          #maps the user hash to a hash of movie_id mapped to the rating given by the user
-         @user_hash[Integer(value.split(" ")[0])][Integer(value.split(" ")[1])] = (Integer(value.split(" ")[2]))
+         @user_hash[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
          
          #maps each movie id to its number of ratings
-         @number_of_ratings_hash[Integer(svalue.split(" ")[1])] = @number_of_ratings_hash[Integer(value.split(" ")[1])] + 1
+         @number_of_ratings_hash[Integer(split_line[1])] = @number_of_ratings_hash[Integer(split_line[1])] + 1
           
          #puts each movie_id's timestamps into an ARRAY mapped by the movie_id
-         @timestamp_hash[Integer(value.split(" ")[1])] << (Integer(value.split(" ")[3]))
+         @timestamp_hash[Integer(split_line[1])] << (Integer(split_line[3]))
          
        end
        
@@ -78,8 +80,10 @@ class MovieData
   
   def add_test_set(file,number_of_lines)
     
-       File.readlines(file)[0..(number_of_lines-1)].each do |value|
-
+      lines = File.readlines(file)[0..(number_of_lines-1)]
+      
+      lines.each do |value|
+         
          split_line = value.split(" ")
          
          @test_set[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
