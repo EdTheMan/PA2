@@ -10,6 +10,7 @@
 #more people get a chance to rate it, so give a slight advantage to newer movies based on SCALEAVERAGETIMESTAMP.
 #Similarity is given by 1 / 1 + ((rating of user1) - (rating of user2).abs))
 
+require_relative 'movie_test.rb'
 
 class MovieData
   
@@ -103,7 +104,6 @@ class MovieData
     number_of_ratings = 0.0
     
     most_similar(u).each do |key|
-      p @user_hash[key][m]
         total_ratings += @user_hash[key][m]
     end
     
@@ -119,7 +119,6 @@ class MovieData
   end
   
   def viewers(m)
-
     users = Array.new
     @user_hash.each do |key,value|
          if(value.has_key?(m))
@@ -129,16 +128,7 @@ class MovieData
     return users   
   end
 
-def run_test(k)
-  
-  result_object = MovieTest.new 
-  for x in 0..(k-1) 
-    dummy = @ratings[x].split(" ")
-    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
-  end 
-  return result_object
-  
-end
+
   
   #takes movie_id (integer) as parameters
   #returns a number determining the popularity
