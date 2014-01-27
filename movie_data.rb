@@ -1,3 +1,14 @@
+#Chi Ieong (Eddie) Tai
+#teddy123168@gmail.com
+#1/20/14
+#Pito Salas, COSI 236B
+#This class is used to determine the popularity of a movie and the similarity
+#between users using a text file from the current directory.
+#Popularity is given by the formula (Average timestamp/ SCALEAVERAGETIMESTAMP) + number of ratings
+#whether a movie has good or bad reviews, it could still be considered popular
+#and a movie who is older (smaller timestamp) will usually have more ratings because 
+#more people get a chance to rate it, so give a slight advantage to newer movies based on SCALEAVERAGETIMESTAMP.
+#Similarity is given by 1 / 1 + ((rating of user1) - (rating of user2).abs))
 
 
 class MovieData
@@ -81,6 +92,71 @@ class MovieData
     
   end
   
+  def rating(u,m)
+        
+    if @user_hash[u][m] != nil
+      
+      return @user_hash[u][m]   
+      
+    else
+      
+      return 0
+      
+    end
+ 
+  end
+
+
+  def predict(u,m)
+    
+    most_similar_users = most_similar(u)
+    
+    total_ratings = 0.0
+    number_of_ratings = 0.0
+    
+    most_similar_users.each do |key|
+    
+      #p @user_hash[key][m]
+      if @user_hash[key][m] != nil
+        total_ratings += @user_hash[key][m]
+        number_of_ratings += 1
+      end
+    
+    end
+    
+    if(number_of_ratings != 0.0)
+    return total_ratings/number_of_ratings
+    else
+    return 0.0
+    end
+    
+  end
+
+  def movies(u)
+    p @user_hash[u].keys
+  end
+  
+  def viewers(m)
+
+    users = Array.new
+    @user_hash.each do |key,value|
+         if(value.has_key?(m))
+         users << key       
+         end          
+    end  
+    return users   
+  end
+
+def run_test(k)
+  
+  result_object = MovieTest.new 
+  for x in 0..(k-1) 
+    dummy = @ratings[x].split(" ")
+    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
+  end 
+  return result_object
+  
+end
   
   #takes movie_id (integer) as parameters
   #returns a number determining the popularity
