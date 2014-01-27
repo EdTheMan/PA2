@@ -21,7 +21,7 @@ class MovieData
   def initialize(arg1 = nil,arg2 = nil)
     
     
-    @user_hash = Hash.new {|h,k| h[k] = Hash.new(0) } #hash where user maps to a hash that maps movie_id to its rating by the user
+    @user_hash = Hash.new {|h,k| h[k] = Hash.new } #hash where user maps to a hash that maps movie_id to its rating by the user
     @number_of_ratings_hash = Hash.new(0) #hash that maps a movie to the number of rating it has
     @timestamp_hash = Hash.new {|h,k| h[k] = Array.new } #hash that maps movie id to an array of its timestamps of when it was rated.
     @avg_timestamp_hash = Hash.new #hash that maps the movie_id to the average timestamp of when it was rated (see popularity_list())
@@ -30,6 +30,7 @@ class MovieData
     @test_set = Hash.new {|h,k| h[k] = Hash.new } 
     @arg1 = arg1
     @arg2 = arg2
+    @ratings = File.readlines('u1.test')  
     
   end
   
@@ -99,12 +100,16 @@ class MovieData
 
 
   def predict(u,m)
+    
    
     total_ratings = 0.0
     number_of_ratings = 0.0
     
     most_similar(u).each do |key|
+      if @user_hash[key][m] != nil
         total_ratings += @user_hash[key][m]
+        number_of_ratings += 1
+      end   
     end
     
     if(number_of_ratings != 0.0)
@@ -127,7 +132,18 @@ class MovieData
     end  
     return users   
   end
-dd
+
+def run_test(k)
+  
+  #result_object = MovieTest.new 
+  store = Array.new
+  for x in 0..(k-1) 
+    dummy = @ratings[x].split(" ")
+    store << (Array.new << Integer(dummy[0]) << Integer(dummy[1]) << Integer(dummy[2]) << predict(Integer(dummy[0]),Integer(dummy[1])))
+  end 
+  return MovieTest.new(store)
+  
+end
   
   #takes movie_id (integer) as parameters
   #returns a number determining the popularity
