@@ -13,6 +13,7 @@
 require_relative 'movie_test.rb'
 require_relative 'similarity_calculator'
 require_relative 'popularity_calculator'
+require_relative 'load_data'
 
 class MovieData
   
@@ -32,24 +33,25 @@ class MovieData
     @arg2 = arg2
     @popularity_calculator = PopularityCalculator.new
     @similarity_calculator = SimilarityCalculator.new
-    
+    @load_data = LoadData.new
     
     
   end
   
   #returns void
   def load_data()
-        
+    
+    
     if @arg1 == "ml-100k" and @arg2 == nil
  
-        add_sets(@user_hash,'u.data')
+        @load_data.load(@user_hash,'u.data',true)
         #p @user_hash.keys.take(5)
     
     elsif @arg1 == 'ml-100k' and @arg2 == :u1
       
-        add_sets(@user_hash,'u1.base')
-        add_sets2(@test_set,'u1.test')
-        #p @user_hash.keys.take(5)
+        @load_data.load(@user_hash,'u1.base',true)
+        @load_data.load(@test_set,'u1.test',false)
+        #p @test_set.keys.take(12)
         
      else
     
@@ -60,33 +62,6 @@ class MovieData
       
   end
   
-  
-  def add_sets(array,file)
-    
-       File.readlines(file).each do |value|
-       
-         split_line = value.split(" ")
-       
-         #maps the user hash to a hash of movie_id mapped to the rating given by the user
-         array[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
-         
-         #maps each movie id to its number of ratings
-         @number_of_ratings_hash[Integer(split_line[1])] = @number_of_ratings_hash[Integer(split_line[1])] + 1
-          
-         #puts each movie_id's timestamps into an ARRAY mapped by the movie_id
-         @timestamp_hash[Integer(split_line[1])] << (Integer(split_line[3]))
-         
-       end
-       
-  end
-  
-  
-  def add_sets2(array,file)
-    
-         #maps the user hash to a hash of movie_id mapped to the rating given by the user
-         array[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
- 
-  end
   
  
   
