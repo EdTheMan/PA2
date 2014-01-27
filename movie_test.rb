@@ -9,9 +9,10 @@ class MovieTest
   
   def store_result(user,movie,rating,prediction)
     
-    @list_of_results << (Array.new << user << movie <<rating << prediction)
+    @list_of_results << (Array.new << user << movie << rating << prediction)
     
   end
+  
   
   def mean
     
