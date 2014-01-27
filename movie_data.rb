@@ -44,13 +44,13 @@ class MovieData
     
     if @arg1 == "ml-100k" and @arg2 == nil
  
-        @load_data.load(@user_hash,'u.data',true)
-        #p @user_hash.keys.take(5)
+        @load_data.load_training(@user_hash,'u.data',@number_of_ratings_hash,@timestamp_hash)
+        p @user_hash.keys.take(5)
     
     elsif @arg1 == 'ml-100k' and @arg2 == :u1
       
-        @load_data.load(@user_hash,'u1.base',true)
-        @load_data.load(@test_set,'u1.test',false)
+        @load_data.load_training(@user_hash,'u1.base',@number_of_ratings_hash,@timestamp_hash)
+        @load_data.load_training_and_test(@test_set,'u1.test')
         #p @test_set.keys.take(12)
         
      else
