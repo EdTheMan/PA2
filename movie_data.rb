@@ -134,8 +134,9 @@ def run_test(k)
   
   #result_object = MovieTest.new 
   store = Array.new
-  for x in 0..(k-1) 
-    dummy = @ratings[x].split(" ")
+  file = File.readlines('u1.test')[0..(k-1)]
+  file.each do |value|
+    dummy = value.split(" ")
     store << (Array.new << Integer(dummy[0]) << Integer(dummy[1]) << Integer(dummy[2]) << predict(Integer(dummy[0]),Integer(dummy[1])))
   end 
   return MovieTest.new(store)
