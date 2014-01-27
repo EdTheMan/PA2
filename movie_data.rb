@@ -128,7 +128,16 @@ class MovieData
     return users   
   end
 
-
+def run_test(k)
+  
+  result_object = MovieTest.new 
+  for x in 0..(k-1) 
+    dummy = @ratings[x].split(" ")
+    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
+  end 
+  return result_object
+  
+end
   
   #takes movie_id (integer) as parameters
   #returns a number determining the popularity
