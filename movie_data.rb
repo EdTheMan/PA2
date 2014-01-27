@@ -62,19 +62,15 @@ class MovieData
        File.readlines(file)[0..(number_of_lines-1)].each do |value|
        
          split_line = value.split(" ")
-         user = split_line[0]
-         movie = split_line[1]
-         rating = split_line[2]
-         timestamp = split_line[3]
-        
+       
          #maps the user hash to a hash of movie_id mapped to the rating given by the user
-         @user_hash[Integer(user)][Integer(movie)] = (Integer(rating))
+         @user_hash[Integer(split_line[0])][Integer(split_line[1])] = (Integer(split_line[2]))
          
          #maps each movie id to its number of ratings
-         @number_of_ratings_hash[Integer(movie)] = @number_of_ratings_hash[Integer(movie)] + 1
+         @number_of_ratings_hash[Integer(split_line[1])] = @number_of_ratings_hash[Integer(split_line[1])] + 1
           
          #puts each movie_id's timestamps into an ARRAY mapped by the movie_id
-         @timestamp_hash[Integer(movie)] << (Integer(timestamp))
+         @timestamp_hash[Integer(split_line[1])] << (Integer(split_line[3]))
          
        end
        
