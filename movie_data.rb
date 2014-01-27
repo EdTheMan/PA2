@@ -10,7 +10,6 @@
 #more people get a chance to rate it, so give a slight advantage to newer movies based on SCALEAVERAGETIMESTAMP.
 #Similarity is given by 1 / 1 + ((rating of user1) - (rating of user2).abs))
 
-require_relative 'movie_test.rb'
 
 class MovieData
   
