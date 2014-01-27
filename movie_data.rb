@@ -12,12 +12,11 @@
 
 require_relative 'movie_test.rb'
 require_relative 'similarity_calculator'
+require_relative 'popularity_calculator'
 
 class MovieData
   
-  #initializes variables
-  SCALEAVERAGETIMESTAMP = 10000000000 #2 years gives about 6 rating to popularity formula
-    
+  
   #initializes Hashes
   def initialize(arg1 = nil,arg2 = nil)
     
@@ -31,7 +30,9 @@ class MovieData
     @test_set = Hash.new {|h,k| h[k] = Hash.new } 
     @arg1 = arg1
     @arg2 = arg2
-    @similaritycalculator = SimilarityCalculator.new
+    @popularity_calculator = PopularityCalculator.new
+    @similarity_calculator = SimilarityCalculator.new
+    
     
     
   end
@@ -144,46 +145,28 @@ def run_test(k)
   
 end
   
-  #takes movie_id (integer) as parameters
-  #returns a number determining the popularity
-  def popularity(movie_id)     
-       
-     #gets the average time stamp of a movie_id by getting the timestamp of all ratings and getting the average of that 
-     average_time_stamp = (@timestamp_hash[movie_id].inject{ |sum, el| sum + el }.to_f / @timestamp_hash[movie_id].size)
-     
-     #returns the popularity given by (Average timestamp/ SCALEAVERAGETIMESTAMP) + number of ratings
-     return ((average_time_stamp  / SCALEAVERAGETIMESTAMP)) + (@number_of_ratings_hash[movie_id])
-
+  def popularity(movie_id)
+    
+    @popularity_calculator.popularity(movie_id,@timestamp_hash,@number_of_ratings_hash)
+    
   end
   
-  #returns the list of popular movies
-  def popularity_list
-
-       #each key is a movie_id that maps to its average timestamp
-       @timestamp_hash.each do |key, value|
-          @avg_timestamp_hash[key] = (@timestamp_hash[key].inject{ |sum, el| sum + el }.to_f / @timestamp_hash[key].size) 
-       end
-      
-       #gets all the popularity of each movie id by the formula (Average timestamp/ @scaleAvgTimestamp) + number of ratings
-       @avg_timestamp_hash.each do |key, value|
-          @popularity_hash[key] = ((@avg_timestamp_hash[key]  / SCALEAVERAGETIMESTAMP)) + (@number_of_ratings_hash[key])
-       end
-       
-       #returns the list of movies from the most popular to the least popular
-       return Hash[@popularity_hash.sort_by{|k, v| v}.reverse].keys
-        
+  def popularity_list()
+    
+    @popularity_calculator.popularity_list(@timestamp_hash)
+    
   end
   
   
   def similarity(user1,user2)
     
-    @similaritycalculator.similarity(user1,user2,@user_hash)
+    @similarity_calculator.similarity(user1,user2,@user_hash)
     
   end
   
   def most_similar(user)
     
-    @similaritycalculator.most_similar(user,@user_hash,@similarity_hash)
+    @similarity_calculator.most_similar(user,@user_hash,@similarity_hash)
     
   end
   
