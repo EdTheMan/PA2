@@ -62,9 +62,7 @@ class MovieData
       
   end
   
-  
  
-  
   def rating(u,m)
         
     if @user_hash[u][m] != nil
