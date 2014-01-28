@@ -9,14 +9,14 @@ class MovieTest
   
   def store_result(user,movie,rating,prediction)
     
-    @list_of_results << (Array.new << user << movie <<rating << prediction)
+    @list_of_results << (Array.new << user << movie << rating << prediction)
     
   end
   
   def mean
     
     prediction_error = Array.new
-    p @list_of_results
+    #p @list_of_results
     
     @list_of_results.each do |value|
       
@@ -24,7 +24,7 @@ class MovieTest
       
     end
     
-    p (prediction_error.inject{ |sum, el| sum + el }.to_f / prediction_error.size)
+    return (prediction_error.inject{ |sum, el| sum + el }.to_f / prediction_error.size)
     
   end
   
@@ -39,8 +39,8 @@ class MovieTest
       
      end
     
-    p prediction_error
-    p standard_deviation(prediction_error)
+     prediction_error
+    return standard_deviation(prediction_error)
     
   end
   
@@ -64,25 +64,15 @@ class MovieTest
        
      end
      
-     p prediction_error
-     p (Math.sqrt(rms/index))
+     return (Math.sqrt(rms/index))
     
   end
   
   def to_a 
     
-     @list_of_results.each do |value|
-      
-        prediction_error <<  ( ((value[3].to_f) - (value[2].to_f)) / (value[2].to_f) ).abs
-      
-     end
-     
-     p prediction_error
-    
+     return @list_of_results
     
   end
-  
-  
   
     #  sum of an array of numbers
   def sum(array)

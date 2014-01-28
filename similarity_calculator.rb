@@ -37,7 +37,7 @@ class SimilarityCalculator
      
         if user != key #do not include the given user
         
-        similarity_hash[key] = similarity(user,key) #hash maps user id to its similarity of the given user
+        similarity_hash[key] = similarity(user,key,user_hash) #hash maps user id to its similarity of the given user
         
         end
       

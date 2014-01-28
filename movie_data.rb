@@ -45,7 +45,7 @@ class MovieData
     if @arg1 == "ml-100k" and @arg2 == nil
  
         @load_data.load_training(@user_hash,'u.data',@number_of_ratings_hash,@timestamp_hash)
-        p @user_hash.keys.take(5)
+        #p @user_hash.keys.take(5)
     
     elsif @arg1 == 'ml-100k' and @arg2 == :u1
       
@@ -114,6 +114,7 @@ def run_test(k)
     dummy = value.split(" ")
     result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
   end 
+  p result_object
   return result_object
   
 end
@@ -142,8 +143,6 @@ end
     @similarity_calculator.most_similar(user,@user_hash,@similarity_hash)
     
   end
-  
-  
 
   
 end
