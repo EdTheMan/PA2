@@ -41,9 +41,9 @@ class MovieData
   #returns void
   def load_data()
     
-    
+    #checks for arguments
     if @arg1 == "ml-100k" and @arg2 == nil
- 
+    
         @load_data.load_training(@user_hash,'u.data',@number_of_ratings_hash,@timestamp_hash)
         #p @user_hash.keys.take(5)
     
@@ -62,7 +62,7 @@ class MovieData
       
   end
   
- 
+  #returns the rating a user u gave to a movie m, if the user did not rate then return 0
   def rating(u,m)
         
     if @user_hash[u][m] != nil
@@ -71,13 +71,14 @@ class MovieData
     return 0
   end
 
-
+  #returns a prediction of what a user u would rate a movie m based on the user's top similar users
+  #it gets the average of the ratings of the most similar users and returns the average of those ratings
   def predict(u,m)
-    
    
     total_ratings = 0.0
     number_of_ratings = 0.0
     
+    #checks each most similar user
     most_similar(u).each do |key|
       if @user_hash[key][m] != nil
         total_ratings += @user_hash[key][m]
@@ -92,10 +93,12 @@ class MovieData
     
   end
 
+  #returns an array of the list of movies the user u has rated/seen
   def movies(u)
     p @user_hash[u].keys
   end
   
+  #returns the list of viewers who have seen movie m
   def viewers(m)
     users = Array.new
     @user_hash.each do |key,value|
@@ -106,18 +109,19 @@ class MovieData
     return users   
   end
 
-def run_test(k)
-  
-  #result_object = MovieTest.new 
-  result_object = MovieTest.new
-  File.readlines('u1.test')[0..(k-1)].each do |value|
-    dummy = value.split(" ")
-    result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
-  end 
-  p result_object
-  return result_object
-  
-end
+  #runs the prediction test along with statistical information about it k times.
+  def run_test(k)
+    
+    #result_object = MovieTest.new 
+    result_object = MovieTest.new
+    File.readlines('u1.test')[0..(k-1)].each do |value|
+      dummy = value.split(" ")
+      result_object.store_result(dummy[0],dummy[1],dummy[2],predict(Integer(dummy[0]),Integer(dummy[1]))) 
+    end 
+    #p result_object
+    return result_object
+    
+  end
   
   def popularity(movie_id)
     

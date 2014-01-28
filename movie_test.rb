@@ -39,7 +39,7 @@ class MovieTest
       
      end
     
-     prediction_error
+    
     return standard_deviation(prediction_error)
     
   end
